@@ -5,6 +5,8 @@ interface PostPageServerProps {
 }
 
 const Post: NextPage<PostPageServerProps> = (props) => {
+    console.log(`Running Post ${props.post.data.id} Render`)
+    
     return (
         <div>
             {JSON.stringify(props.post, null, 2)}

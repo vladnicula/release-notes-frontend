@@ -25,10 +25,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // this should be the actual path not a rewritten path
         // e.g. for "/blog/[slug]" this should be "/blog/post-1"
         // await res.revalidate('/path-to-revalidate')
-        console.log("ce lampa mea", req.body)
+        // console.log("revalidate handler request body", req.body)
         const content = req.body as WebhookBodyOnlyPostNow
         await res.revalidate(`/posts/${content.entry.id}`)
-        console.log("revalidation complete", `/posts/${content.entry.id}`)
+        await res.revalidate(`/`)
+        console.log("revalidation complete", `/posts/${content.entry.id}`, 'and homepage (/)')
         return res.json({ revalidated: true })
     } catch (err) {
         console.log("problmes", err)
