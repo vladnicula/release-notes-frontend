@@ -1,11 +1,11 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 
 interface PostPageServerProps {
-    post: { data: PostData  }
+    post?: {data: PostData}
 }
 
 const Post: NextPage<PostPageServerProps> = (props) => {
-    console.log(`Running Post ${props.post.data.id} Render`)
+    console.log(`\nRunning Post ${props.post?.data} Render`)
     
     return (
         <div>
@@ -27,7 +27,6 @@ type PostData = {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    console.log('getStaticProps', context.params)
     const { id } = context.params ?? {}
     const res = await fetch(`http://localhost:1337/api/posts/${id}`, {
         headers: {
@@ -37,6 +36,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     const post = await res.json()
 
+    console.log("getStaticProps post", {post})
+
     return {
         props: {
             post
@@ -45,6 +46,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export const getStaticPaths: GetStaticPaths = () => {
+    console.log("getStaticPaths posts/[id]")
+    
     return {
         paths: [],
         fallback: true,

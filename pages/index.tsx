@@ -1,6 +1,4 @@
 import type { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
@@ -58,7 +56,6 @@ export const getStaticProps: GetStaticProps = async () => {
             props: {
                 posts
             },
-            // revalidate: 60
         }
     } catch (err) {
         console.log("SHOULD LOG BUILD ERROR", err)
