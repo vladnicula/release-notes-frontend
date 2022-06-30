@@ -29,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const content = req.body as WebhookBodyOnlyPostNow
         await res.revalidate(`/posts/${content.entry.id}`)
         console.log("revalidation complete", `/posts/${content.entry.id}`)
-        
         return res.json({ revalidated: true })
     } catch (err) {
         console.log("problmes", err)

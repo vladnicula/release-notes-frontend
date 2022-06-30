@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "next": "^12.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next-plugin-preact": "^3.0.7",
+    "react": "npm:@preact/compat@^17.1.1",
+    "react-dom": "npm:@preact/compat@^17.1.1"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
