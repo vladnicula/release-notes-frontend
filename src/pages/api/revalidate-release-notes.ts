@@ -11,6 +11,8 @@ type WebhookBodyOnlyPostNow = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Check for secret to confirm this is a valid request
     if (req.headers.REVALIDATE_TOKEN !== process.env.REVALIDATE_TOKEN) {
+        console.log("REVALIDATE token not valid", "expected", process.env.REVALIDATE_TOKEN, "got", req.headers.REVALIDATE_TOKEN)
+        console.log("req.headers", req.headers)
         return res.status(401).json({ message: 'Invalid token' })
     }
   
