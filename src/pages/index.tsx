@@ -12,7 +12,7 @@ interface ReleasesPageServerProps {
 
 const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
 
-    console.log("Running Releases Render")
+    console.log("Running Releases Render", props.releaseNotes)
 
     return (
         <div className={styles.container}>
@@ -21,8 +21,8 @@ const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
                 {props.releaseNotes.data.map((release) => {
                     return (
                         <li key={release.id}>
-                            <Link href={`/release-notes/${release.id}`}>
-                                <a href={`/release-notes/${release.id}`}>
+                            <Link href={`/release-notes/${release.attributes.slug}`}>
+                                <a href={`/release-notes/${release.attributes.slug}`}>
                                     {release.attributes.Title}
                                 </a>
                             </Link>

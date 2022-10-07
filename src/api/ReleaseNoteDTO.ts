@@ -5,6 +5,7 @@ export type ReleaseNoteDTO = {
         ReleaseData: string;
         ReleaseVersion: string;
         Details: string;
+        slug: string;
     };
     id: number;
 };

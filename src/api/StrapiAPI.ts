@@ -29,3 +29,12 @@ export type ReleaseNoteByIdAPIResponse = {
 export const getReleaseNoteById = async (id: string) => {
     return StrapiAPI.get<ReleaseNoteByIdAPIResponse>(`/release-notes/${id}?publicationState=live&filters[publishedAt][$notNull]=true`)
 }
+
+
+// http://localhost:3000/api/preview-release-notes?secret=potatosRu4L@W0rlDDD134&slug=1-0-3
+export const getReleaseNoteBySlug = async (slug: string, previewMode: boolean | null = null) => {
+    const publicationState = previewMode ? "preview" : "live"
+    const requestUrlPart = `/release-notes?publicationState=${publicationState}&filters[slug][$eq]=${slug}`
+    const resultsBySlug = await StrapiAPI.get<ReleaseNotesListAPIResponse>(requestUrlPart)
+    return resultsBySlug.data.data[0] as ReleaseNoteDTO | undefined
+}
