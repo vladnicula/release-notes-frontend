@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { ReleaseNoteDTO } from "api/ReleaseNoteDTO"
+import { readEnvOrThrow } from 'utils/readEnvOrThrow'
 
 type WebhookBodyOnlyPostNow = {
     event: 'entry.publish' | 'entry.update' | 'entry.create' | 'entry.unpublish';
@@ -10,8 +11,9 @@ type WebhookBodyOnlyPostNow = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Check for secret to confirm this is a valid request
-    if (req.headers.REVALIDATE_TOKEN !== process.env.REVALIDATE_TOKEN) {
-        console.log("REVALIDATE token not valid", "expected", process.env.REVALIDATE_TOKEN, "got", req.headers.REVALIDATE_TOKEN)
+    const revalidatationToken = readEnvOrThrow('REVALIDATE_TOKEN')
+    if (req.headers.REVALIDATE_TOKEN !== revalidatationToken) {
+        console.log("REVALIDATE token not valid", "expected", revalidatationToken, "got", req.headers.REVALIDATE_TOKEN)
         console.log("req.headers", req.headers)
         return res.status(401).json({ message: 'Invalid token' })
     }
