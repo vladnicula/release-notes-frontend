@@ -7,7 +7,7 @@
 export const readEnvOrThrow = (envKey: string): string => {
     const keyValue = process.env[envKey]
     if ( !keyValue ) {
-        throw new Error(`[EnvSetupError]: Could not find ${envKey} in Portal's process.env.`)
+        throw new Error(`[EnvSetupError]: Could not find ${envKey} in process.env.`)
     }
 
     return keyValue
