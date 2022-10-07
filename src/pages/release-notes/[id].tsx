@@ -9,6 +9,7 @@ interface PostPageServerProps {
 }
 
 const ReleasePage: NextPage<PostPageServerProps> = (props) => {    
+    console.log("Rendering ReleasePage", props)
     return (
         <div>
             {JSON.stringify(props.releaseNote, null, 2)}
@@ -24,6 +25,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
 
     id = Array.isArray(id) ? id[0] : id
+
+    console.log("getting data from release-note", id)
 
     const releaseNote = (await getReleaseNoteById(id)).data
 
