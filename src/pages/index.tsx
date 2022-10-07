@@ -1,9 +1,13 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import styles from 'styles/Home.module.css'
+
+import { ReleaseNoteDTO } from 'api/ReleaseNoteDTO'
+import { getReleaseNotesList } from 'api/StrapiAPI'
+
 
 interface ReleasesPageServerProps {
-  releases: { data: ReleaseData[] }
+  releaseNotes: { data: ReleaseNoteDTO[] }
 }
 
 const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
@@ -14,11 +18,11 @@ const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
         <div className={styles.container}>
             <h2>Releases List</h2>
             <ul>
-                {props.releases.data.map((release) => {
+                {props.releaseNotes.data.map((release) => {
                     return (
                         <li key={release.id}>
-                            <Link href={`/releases/${release.id}`}>
-                                <a href={`/releases/${release.id}`}>
+                            <Link href={`/release-notes/${release.id}`}>
+                                <a href={`/release-notes/${release.id}`}>
                                     {release.attributes.Title}
                                 </a>
                             </Link>
@@ -30,38 +34,20 @@ const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
     )
 }
 
-export type ReleaseData = {
-  attributes: {
-      Title: string;
-      ReleaseData: string;
-      ReleaseVersion: string;
-      Details: string;
-  };
-  id: number;
-}
+export const getStaticProps: GetStaticProps<ReleasesPageServerProps> = async () => {
+    const releaseNotes = (await getReleaseNotesList()).data
 
-export const getStaticProps: GetStaticProps = async () => {
     try {
-        const res = await fetch(`${process.env.HEADLESS_CMS_URL}/api/release-notes`, {
-            headers: {
-                "Authorization": `Bearer ${process.env.HEADLESS_CMS_API_TOKEN}`
-            }
-        })
-
-        const releases = await res.json()
-
-        console.log("here?", releases)
-
         return {
             props: {
-                releases
+                releaseNotes: releaseNotes
             },
         }
     } catch (err) {
         console.log(`error`, err)
         return {
             props: { 
-                releases: {
+                releaseNotes: {
                     data: []
                 }
             },

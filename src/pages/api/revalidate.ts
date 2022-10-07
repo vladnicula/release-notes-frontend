@@ -1,18 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { ReleaseNoteDTO } from "api/ReleaseNoteDTO"
 
 type WebhookBodyOnlyPostNow = {
     event: 'entry.publish' | 'entry.update' | 'entry.create' | 'entry.unpublish';
     createdAt: string;
-    model: 'post';
-    entry: {
-        id: number;
-        Title: string;
-        publishDate: string | null;
-        Content: string;
-        createdAt: string;
-        updatedAt: string;
-        publishedAt: string | null;
-    };
+    model: 'release-notes';
+    entry: ReleaseNoteDTO;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -27,9 +20,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // await res.revalidate('/path-to-revalidate')
         // console.log("revalidate handler request body", req.body)
         const content = req.body as WebhookBodyOnlyPostNow
-        await res.revalidate(`/posts/${content.entry.id}`)
+        await res.revalidate(`/release-notes/${content.entry.id}`)
         await res.revalidate(`/`)
-        console.log("revalidation complete", `/posts/${content.entry.id}`, 'and homepage (/)')
+        console.log("revalidation complete", `/release-notes/${content.entry.id}`, 'and homepage (/)')
         return res.json({ revalidated: true })
     } catch (err) {
         console.log("problmes", err)

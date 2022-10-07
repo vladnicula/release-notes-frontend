@@ -1,33 +1,35 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { ReleaseData } from '../releases'
+
+import { ReleaseNoteDTO } from 'api/ReleaseNoteDTO'
+import { getReleaseNoteById } from 'api/StrapiAPI'
+
+
 interface PostPageServerProps {
-    post?: {data: ReleaseData}
+    releaseNote?: { data: ReleaseNoteDTO }
 }
 
 const ReleasePage: NextPage<PostPageServerProps> = (props) => {    
     return (
         <div>
-            {JSON.stringify(props.post, null, 2)}
+            {JSON.stringify(props.releaseNote, null, 2)}
         </div>
     )
 }
 
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const { id } = context.params ?? {}
-    const res = await fetch(`${process.env.HEADLESS_CMS_URL}/api/release-notes/${id}`, {
-        headers: {
-            "Authorization": `Bearer ${process.env.HEADLESS_CMS_API_TOKEN}`
-        }
-    })
+    let { id } = context.params ?? {}
+    if ( !id ) {
+        throw new Error(`Id not specified`)
+    }
 
-    const post = await res.json()
+    id = Array.isArray(id) ? id[0] : id
 
-    console.log("getStaticProps fetched post data", post)
+    const releaseNote = (await getReleaseNoteById(id)).data
 
     return {
         props: {
-            post
+            releaseNote
         }
     }
 }
