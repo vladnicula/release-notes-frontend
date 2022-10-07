@@ -1,9 +1,11 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 
 import { ReleaseNoteDTO } from 'api/ReleaseNoteDTO'
-import { getReleaseNoteById, getReleaseNoteBySlug } from 'api/StrapiAPI'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
+
+import Markdown from "markdown-to-jsx"
+import { getReleaseNoteBySlug } from 'api/StrapiAPI'
 
 
 interface PostPageServerProps {
@@ -22,10 +24,19 @@ const ReleasePage: NextPage<PostPageServerProps> = (props) => {
         router.replace('/')
     }, [router])
 
+    if ( !props.releaseNote ) {
+        return null
+    }
+
+    const { Details, ...rest } = props.releaseNote.attributes
+
     return (
         <div>
             { props.preview ? <h2>Preview mode <button onClick={handleClearPreviewMode}>Clear</button></h2> : null }
-            {JSON.stringify(props.releaseNote, null, 2)}
+            <Markdown>{Details}</Markdown>
+            <pre>
+                {JSON.stringify(rest, null, 2)}
+            </pre>
         </div>
     )
 }
