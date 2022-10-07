@@ -26,8 +26,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     id = Array.isArray(id) ? id[0] : id
 
-    console.log("getting data from release-note", id)
-
     const releaseNote = (await getReleaseNoteById(id)).data
 
     return {

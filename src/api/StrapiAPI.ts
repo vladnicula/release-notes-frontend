@@ -27,5 +27,5 @@ export type ReleaseNoteByIdAPIResponse = {
     data: ReleaseNoteDTO
 }
 export const getReleaseNoteById = async (id: string) => {
-    return StrapiAPI.get<ReleaseNoteByIdAPIResponse>(`/release-notes/${id}?publicationState=live&filters[publishedAt][$null]=false`)
+    return StrapiAPI.get<ReleaseNoteByIdAPIResponse>(`/release-notes/${id}?publicationState=live&filters[publishedAt][$notNull]=true`)
 }
