@@ -5,7 +5,7 @@ import { ReleaseNoteDTO } from './ReleaseNoteDTO'
 export const StrapiAPI = axios.create({
     baseURL: `${readEnvOrThrow('HEADLESS_CMS_URL')}/api`,
     headers: {
-        "Authorization": `Bearer ${readEnvOrThrow('HEADLESS_CMS_API_TOKEN')}`
+        "Authorization": `Bearer ${readEnvOrThrow('HEADLESS_CMS_PREVIEW_SECRET')}`
     }
 })
 
