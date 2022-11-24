@@ -35,9 +35,8 @@ const ReleasesPage: NextPage<ReleasesPageServerProps> = (props) => {
 }
 
 export const getStaticProps: GetStaticProps<ReleasesPageServerProps> = async () => {
-    const releaseNotes = (await getReleaseNotesList()).data
-
     try {
+        const releaseNotes = (await getReleaseNotesList()).data
         return {
             props: {
                 releaseNotes: releaseNotes
